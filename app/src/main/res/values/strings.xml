@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Kalambury</string>
+    <string name="start_game_button_text">Rozpocznij grę</string>
+    <string name="rules_button_text">Zasady</string>
+    <string name="exit_button_text">Wyjście</string>
+    <string name="back_button_text">Powrót</string>
+    <string name="next_term_button_text">Losuj kolejne hasło</string>
+</resources>

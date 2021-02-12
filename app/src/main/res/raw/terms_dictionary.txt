@@ -1,0 +1,12 @@
+Matrix;1
+Forest Gump;1
+Kasyno;1
+Telefon;2
+Drzwi;2
+Stół;2
+Pilot;2
+Pierwsze koty za płoty;3
+Bez pracy nie ma kołaczy;3
+Fortuna kołem się toczy;3
+Apetyt rośnie w miarę jedzenia;3
+
