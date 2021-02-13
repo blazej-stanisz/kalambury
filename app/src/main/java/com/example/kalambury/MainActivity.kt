@@ -15,15 +15,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // dba access
-        val someTextLabel = findViewById<TextView>(R.id.textView2)
-        databaseHelper = DatabaseHelper(this)
-        val data =  databaseHelper.readData()
-
-        while (data.moveToNext()){
-            someTextLabel.text = data.getString(1)
-        }
-
         val exitButton = findViewById<Button>(R.id.exitButton)
         val rulesButton = findViewById<Button>(R.id.rulesButton)
         val startGameButton = findViewById<Button>(R.id.startGameButton)
