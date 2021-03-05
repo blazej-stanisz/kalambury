@@ -17,18 +17,21 @@
         android:id="@+id/startGameButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/MyButton"
         android:text="@string/start_game_button_text" />
 
     <Button
         android:id="@+id/rulesButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/MyButton"
         android:text="@string/rules_button_text" />
 
     <Button
         android:id="@+id/exitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/MyButton"
         android:text="@string/exit_button_text" />
 
     <TextView
