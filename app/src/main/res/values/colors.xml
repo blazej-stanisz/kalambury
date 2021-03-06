@@ -3,5 +3,5 @@
     <color name="colorPrimary">#3DDC84</color>
     <color name="colorPrimaryDark">#3AC377</color>
     <color name="colorAccent">#3AC377</color>
-    <color name="activityBackground">#FFFFFF</color>
+    <color name="activityBackground">#FDFAE3</color>
 </resources>

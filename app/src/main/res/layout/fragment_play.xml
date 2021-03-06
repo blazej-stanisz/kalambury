@@ -22,8 +22,9 @@
 
         <Button
             android:id="@+id/nextTermButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/MyCircleButton"
             android:text="@string/next_term_button_text" />
 
     </LinearLayout>

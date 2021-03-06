@@ -4,5 +4,5 @@
     <string name="rules_button_text">Zasady</string>
     <string name="exit_button_text">Wyjście</string>
     <string name="back_button_text">Powrót</string>
-    <string name="next_term_button_text">Losuj kolejne hasło</string>
+    <string name="next_term_button_text">Losuj</string>
 </resources>
