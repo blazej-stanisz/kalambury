@@ -8,10 +8,10 @@
         android:id="@+id/rulesTextView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="Kalambury"
+        android:layout_marginBottom="30dp"
+        android:text="@string/app_name"
         android:textAlignment="center"
-        android:textSize="24sp" />
+        android:textSize="34sp" />
 
     <Button
         android:id="@+id/startGameButton"
