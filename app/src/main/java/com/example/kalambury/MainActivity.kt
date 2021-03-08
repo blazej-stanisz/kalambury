@@ -7,6 +7,7 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.kalambury.db.DatabaseHelper
 import com.example.kalambury.helpers.FragmentNavigator
 import com.example.kalambury.helpers.NavigableFragment
@@ -45,7 +46,11 @@ class MainActivity : AppCompatActivity(), FragmentNavigator {
         val fragmentManager = supportFragmentManager
         if (supportFragmentManager.backStackEntryCount > 1) {
             //Go back to previous Fragment
-            fragmentManager.popBackStackImmediate()
+            //fragmentManager.popBackStackImmediate()
+
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            val mainFragment = MainFragment()
+            navigateTo(mainFragment)
         } else {
             if (doubleBackToExitPressedOnce) {
                 this.finishAffinity()

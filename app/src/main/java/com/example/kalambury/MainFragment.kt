@@ -26,10 +26,7 @@ class MainFragment : NavigableFragment() {
         }
 
         exitButton.setOnClickListener {
-            //System.exit(0);
             activity?.finishAffinity()
-
-            //supportFragmentManager?.popBackStackImmediate()
         }
 
         return view

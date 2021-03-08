@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.example.kalambury.helpers.NavigableFragment
+import com.example.kalambury.helpers.setTextAnimation
 import kotlin.random.Random
 
 class PlayFragment : NavigableFragment() {
@@ -47,7 +48,8 @@ class PlayFragment : NavigableFragment() {
 
         Log.i("PlayActivity", generatedNumber.toString())
         data.moveToPosition(generatedNumber)
-        this.termTextView.text = data.getString(1)
+        //this.termTextView.text = data.getString(1)
+        this.termTextView.setTextAnimation(data.getString(1))
     }
 
     private fun generateNextRandomUnusedNumber(rowsCount: Int) : Int {
