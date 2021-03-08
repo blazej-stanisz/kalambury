@@ -23,9 +23,9 @@ class MainActivity : AppCompatActivity(), FragmentNavigator {
     }
 
     override fun navigateTo(fragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragmentPlaceholderView, fragment).addToBackStack(null).commit()
+        var transaction = supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit)
+        transaction.replace(R.id.fragmentPlaceholderView, fragment).addToBackStack(null).commit()
     }
 
     override fun onAttachFragment(fragment: Fragment) {
