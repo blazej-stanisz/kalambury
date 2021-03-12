@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.example.kalambury.helpers.NavigableFragment
 import com.example.kalambury.helpers.setTextAnimation
+import com.example.kalambury.helpers.vibrate
 import kotlin.random.Random
 
 class PlayFragment : NavigableFragment() {
@@ -44,12 +45,14 @@ class PlayFragment : NavigableFragment() {
     private fun getNextTerm()  {
         val data = this.databaseHelper?.readData() ?: return
 
+        vibrate()
+
         var generatedNumber = generateNextRandomUnusedNumber(data.count)
 
         Log.i("PlayActivity", generatedNumber.toString())
         data.moveToPosition(generatedNumber)
         //this.termTextView.text = data.getString(1)
-        this.termTextView.setTextAnimation(data.getString(1))
+        this.termTextView.setTextAnimation(data.getString(1), 150, 300)
     }
 
     private fun generateNextRandomUnusedNumber(rowsCount: Int) : Int {

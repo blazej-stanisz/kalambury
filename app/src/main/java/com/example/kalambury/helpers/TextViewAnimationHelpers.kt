@@ -3,10 +3,10 @@ package com.example.kalambury.helpers
 import android.view.View
 import android.widget.TextView
 
-fun TextView.setTextAnimation(text: String, duration: Long = 300, completion: (() -> Unit)? = null) {
-    fadOutAnimation(duration) {
+fun TextView.setTextAnimation(text: String, fadeOutDuration: Long = 100, fadeInDuration: Long = 100, completion: (() -> Unit)? = null) {
+    fadOutAnimation(fadeOutDuration) {
         this.text = text
-        fadInAnimation(duration) {
+        fadInAnimation(fadeInDuration) {
             completion?.let {
                 it()
             }
@@ -26,7 +26,7 @@ fun View.fadOutAnimation(duration: Long = 100, visibility: Int = View.INVISIBLE,
             }
 }
 
-fun View.fadInAnimation(duration: Long = 300, completion: (() -> Unit)? = null) {
+fun View.fadInAnimation(duration: Long = 100, completion: (() -> Unit)? = null) {
     alpha = 0f
     visibility = View.VISIBLE
     animate()
