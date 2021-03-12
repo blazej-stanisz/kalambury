@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
 import android.util.Log
-import java.io.InputStream
+import com.example.kalambury.db.models.TermsTableModel
 
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(
     context,
@@ -19,20 +19,20 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
         Log.i("DatabaseHelper", "onCreate")
 
         val createTermsTable =
-            "CREATE TABLE IF NOT EXISTS  ${DatabaseModels.TABLE_NAME} (" +
+            "CREATE TABLE IF NOT EXISTS  ${TermsTableModel.TERMS_TABLE_NAME} (" +
             "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "${DatabaseModels.COLUMN_TERM} TEXT, " +
-            "${DatabaseModels.COLUMN_TYPE} INTEGER)"
+            "${TermsTableModel.COLUMN_TERM} TEXT, " +
+            "${TermsTableModel.COLUMN_TYPE} INTEGER)"
 
         db!!.execSQL(createTermsTable)
 
-        Log.i("DatabaseHelper", "Table ${DatabaseModels.TABLE_NAME} created.")
+        Log.i("DatabaseHelper", "Table ${TermsTableModel.TERMS_TABLE_NAME} created.")
 
         insertDatatoDatabase(db);
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db!!.execSQL("DROP TABLE IF EXISTS ${DatabaseModels.TABLE_NAME}")
+        db!!.execSQL("DROP TABLE IF EXISTS ${TermsTableModel.TERMS_TABLE_NAME}")
         onCreate(db);
     }
 
@@ -40,18 +40,18 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
         Log.i("DatabaseHelper", "readData")
 
         val db : SQLiteDatabase = this.writableDatabase
-        val read : Cursor = db.rawQuery("SELECT * FROM ${DatabaseModels.TABLE_NAME}", null)
+        val read : Cursor = db.rawQuery("SELECT * FROM ${TermsTableModel.TERMS_TABLE_NAME}", null)
 
         return read
     }
 
     fun insertDatatoDatabase(db: SQLiteDatabase) {
-        Log.i("DatabaseHelper", "Inserting data to  ${DatabaseModels.TABLE_NAME} table")
+        Log.i("DatabaseHelper", "Inserting data to  ${TermsTableModel.TERMS_TABLE_NAME} table")
 
         val insertContent = getInsertContent();
         db!!.execSQL(insertContent)
 
-        Log.i("DatabaseHelper", "Insert to  ${DatabaseModels.TABLE_NAME} table done..")
+        Log.i("DatabaseHelper", "Insert to  ${TermsTableModel.TERMS_TABLE_NAME} table done..")
     }
 
     private fun getInsertContent() : String {
@@ -60,7 +60,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
 
         val splittedRows = fileText.split("\r\n");
         val sb = StringBuilder()
-        sb.append("INSERT INTO ${DatabaseModels.TABLE_NAME} (${DatabaseModels.COLUMN_TERM}, ${DatabaseModels.COLUMN_TYPE}) VALUES ")
+        sb.append("INSERT INTO ${TermsTableModel.TERMS_TABLE_NAME} (${TermsTableModel.COLUMN_TERM}, ${TermsTableModel.COLUMN_TYPE}) VALUES ")
 
         splittedRows.forEach  {
             val splittedRow = it.split(";")
