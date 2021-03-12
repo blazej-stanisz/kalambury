@@ -9,3 +9,8 @@ class TermsTableModel : BaseColumns {
         const val COLUMN_TYPE = "Type"
     }
 }
+
+// [Terms]
+//  + Id
+//  + Term
+//  + Type

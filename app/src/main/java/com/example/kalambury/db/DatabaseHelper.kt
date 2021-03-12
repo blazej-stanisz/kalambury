@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
 import android.util.Log
+import com.example.kalambury.db.models.CategoriesTableModel
 import com.example.kalambury.db.models.TermsTableModel
 
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(
@@ -18,21 +19,34 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
     override fun onCreate(db: SQLiteDatabase?) {
         Log.i("DatabaseHelper", "onCreate")
 
-        val createTermsTable =
-            "CREATE TABLE IF NOT EXISTS  ${TermsTableModel.TERMS_TABLE_NAME} (" +
-            "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "${TermsTableModel.COLUMN_TERM} TEXT, " +
-            "${TermsTableModel.COLUMN_TYPE} INTEGER)"
+        // create categories table
+        val createCategoriesTable =
+                "CREATE TABLE IF NOT EXISTS  ${CategoriesTableModel.CATEGORIES_TABLE_NAME} (" +
+                        "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "${CategoriesTableModel.COLUMN_NAME} TEXT)"
 
+        // create terms table
+        val createTermsTable =
+                "CREATE TABLE IF NOT EXISTS  ${TermsTableModel.TERMS_TABLE_NAME} (" +
+                        "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "${TermsTableModel.COLUMN_TERM} TEXT, " +
+                        "${TermsTableModel.COLUMN_TYPE} INTEGER)"
+
+        db!!.execSQL(createCategoriesTable)
         db!!.execSQL(createTermsTable)
 
-        Log.i("DatabaseHelper", "Table ${TermsTableModel.TERMS_TABLE_NAME} created.")
+        Log.i("DatabaseHelper", "Tables created.")
 
-        insertDatatoDatabase(db);
+        insertDataToDatabase(db);
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        // categories
+        db!!.execSQL("DROP TABLE IF EXISTS ${CategoriesTableModel.CATEGORIES_TABLE_NAME}")
+
+        // terms
         db!!.execSQL("DROP TABLE IF EXISTS ${TermsTableModel.TERMS_TABLE_NAME}")
+
         onCreate(db);
     }
 
@@ -45,16 +59,32 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
         return read
     }
 
-    fun insertDatatoDatabase(db: SQLiteDatabase) {
-        Log.i("DatabaseHelper", "Inserting data to  ${TermsTableModel.TERMS_TABLE_NAME} table")
+    fun insertDataToDatabase(db: SQLiteDatabase) {
+        Log.i("DatabaseHelper", "Inserting data.")
 
-        val insertContent = getInsertContent();
-        db!!.execSQL(insertContent)
+        // categories
+        val insertCategoriesContent = getInsertToCategoriesTableContent();
+        db!!.execSQL(insertCategoriesContent)
 
-        Log.i("DatabaseHelper", "Insert to  ${TermsTableModel.TERMS_TABLE_NAME} table done..")
+        // terms
+        val insertTermsContent = getInsertToTermsTableContent();
+        db!!.execSQL(insertTermsContent)
+
+        Log.i("DatabaseHelper", "Insert to  tables done..")
     }
 
-    private fun getInsertContent() : String {
+    private fun getInsertToCategoriesTableContent() : String {
+        val sb = StringBuilder()
+
+        sb.append("INSERT INTO ${CategoriesTableModel.CATEGORIES_TABLE_NAME} (${CategoriesTableModel.COLUMN_NAME}) VALUES ")
+        sb.append("('Filmy'),")
+        sb.append("('Powiedzenia'),")
+        sb.append("('Przysłowia');")
+
+        return sb.toString()
+    }
+
+    private fun getInsertToTermsTableContent() : String {
         val fileContent = DatabaseHelper::class.java.getResource("/res/raw/terms_dictionary.txt")
         val fileText = fileContent.readText()
 
