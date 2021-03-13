@@ -5,12 +5,13 @@ import android.provider.BaseColumns
 class TermsTableModel : BaseColumns {
     companion object {
         const val TERMS_TABLE_NAME = "Terms"
-        const val COLUMN_TERM = "Term"
-        const val COLUMN_TYPE = "Type"
+        const val COLUMN_ID = "id"
+        const val COLUMN_TERM_NAME = "term_name"
+        const val COLUMN_CATEGORY_ID = "category_id"
     }
 }
 
 // [Terms]
-//  + Id
-//  + Term
-//  + Type
+//  + id
+//  + term_name
+//  + category_id

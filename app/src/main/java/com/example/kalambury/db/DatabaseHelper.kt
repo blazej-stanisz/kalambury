@@ -4,7 +4,6 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.provider.BaseColumns
 import android.util.Log
 import com.example.kalambury.db.models.CategoriesTableModel
 import com.example.kalambury.db.models.TermsTableModel
@@ -22,15 +21,16 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
         // create categories table
         val createCategoriesTable =
                 "CREATE TABLE IF NOT EXISTS  ${CategoriesTableModel.CATEGORIES_TABLE_NAME} (" +
-                        "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "${CategoriesTableModel.COLUMN_NAME} TEXT)"
+                        "${CategoriesTableModel.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "${CategoriesTableModel.COLUMN_CATEGORY_NAME} TEXT NOT NULL)"
 
         // create terms table
         val createTermsTable =
                 "CREATE TABLE IF NOT EXISTS  ${TermsTableModel.TERMS_TABLE_NAME} (" +
-                        "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "${TermsTableModel.COLUMN_TERM} TEXT, " +
-                        "${TermsTableModel.COLUMN_TYPE} INTEGER)"
+                        "${TermsTableModel.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "${TermsTableModel.COLUMN_TERM_NAME} TEXT UNIQUE NOT NULL, " +
+                        "${TermsTableModel.COLUMN_CATEGORY_ID} INTEGER NOT NULL, " +
+                        "FOREIGN KEY (${TermsTableModel.COLUMN_CATEGORY_ID}) REFERENCES ${CategoriesTableModel.CATEGORIES_TABLE_NAME}(${CategoriesTableModel.COLUMN_ID}))"
 
         db!!.execSQL(createCategoriesTable)
         db!!.execSQL(createTermsTable)
@@ -74,14 +74,23 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
     }
 
     private fun getInsertToCategoriesTableContent() : String {
+        val fileContent = DatabaseHelper::class.java.getResource("/res/raw/categories_dictionary.txt")
+        val fileText = fileContent.readText()
+
+        val splittedRows = fileText.split("\r\n");
         val sb = StringBuilder()
 
-        sb.append("INSERT INTO ${CategoriesTableModel.CATEGORIES_TABLE_NAME} (${CategoriesTableModel.COLUMN_NAME}) VALUES ")
-        sb.append("('Filmy'),")
-        sb.append("('Powiedzenia'),")
-        sb.append("('Przysłowia');")
+        sb.append("INSERT INTO ${CategoriesTableModel.CATEGORIES_TABLE_NAME} (${CategoriesTableModel.COLUMN_CATEGORY_NAME}) VALUES ")
+        splittedRows.forEach  {
+            sb.append("('${it}'),")
+        }
 
-        return sb.toString()
+        var stringValue = sb.toString()
+
+        stringValue = stringValue.substring(0, stringValue.length - 1)
+        stringValue += ";"
+
+        return stringValue
     }
 
     private fun getInsertToTermsTableContent() : String {
@@ -90,7 +99,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
 
         val splittedRows = fileText.split("\r\n");
         val sb = StringBuilder()
-        sb.append("INSERT INTO ${TermsTableModel.TERMS_TABLE_NAME} (${TermsTableModel.COLUMN_TERM}, ${TermsTableModel.COLUMN_TYPE}) VALUES ")
+        sb.append("INSERT INTO ${TermsTableModel.TERMS_TABLE_NAME} (${TermsTableModel.COLUMN_TERM_NAME}, ${TermsTableModel.COLUMN_CATEGORY_ID}) VALUES ")
 
         splittedRows.forEach  {
             val splittedRow = it.split(";")
