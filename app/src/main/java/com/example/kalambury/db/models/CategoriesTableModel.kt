@@ -9,5 +9,5 @@ class CategoriesTableModel {
 }
 
 // [Categories]
-//  + Id
+//  + id
 //  + category_name

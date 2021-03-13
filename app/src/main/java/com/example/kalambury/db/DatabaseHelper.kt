@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.example.kalambury.db.models.CategoriesTableModel
+import com.example.kalambury.db.models.TermsCategoriesViewModel
 import com.example.kalambury.db.models.TermsTableModel
 
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(
@@ -32,8 +33,17 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
                         "${TermsTableModel.COLUMN_CATEGORY_ID} INTEGER NOT NULL, " +
                         "FOREIGN KEY (${TermsTableModel.COLUMN_CATEGORY_ID}) REFERENCES ${CategoriesTableModel.CATEGORIES_TABLE_NAME}(${CategoriesTableModel.COLUMN_ID}))"
 
+        // create terms_categories view
+        val createTermsCategoriesView =
+            "CREATE VIEW ${TermsCategoriesViewModel.TERMS_CATEGORIES_VIEW_NAME} AS  " +
+                "SELECT t.${TermsTableModel.COLUMN_ID} AS '${TermsCategoriesViewModel.COLUMN_TERM_ID}', t.${TermsTableModel.COLUMN_TERM_NAME}, c.${CategoriesTableModel.COLUMN_ID} AS '${TermsCategoriesViewModel.COLUMN_CATEGORY_ID}', c.${CategoriesTableModel.COLUMN_CATEGORY_NAME} " +
+                    "FROM ${TermsTableModel.TERMS_TABLE_NAME} AS t " +
+                    "LEFT JOIN ${CategoriesTableModel.CATEGORIES_TABLE_NAME} AS c " +
+                    "ON t.${TermsTableModel.COLUMN_CATEGORY_ID} = c.${CategoriesTableModel.COLUMN_ID};"
+
         db!!.execSQL(createCategoriesTable)
         db!!.execSQL(createTermsTable)
+        db!!.execSQL(createTermsCategoriesView)
 
         Log.i("DatabaseHelper", "Tables created.")
 
@@ -46,6 +56,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
 
         // terms
         db!!.execSQL("DROP TABLE IF EXISTS ${TermsTableModel.TERMS_TABLE_NAME}")
+
+        //TermsCategoriesView
+        db!!.execSQL("DROP VIEW IF EXISTS ${TermsCategoriesViewModel.TERMS_CATEGORIES_VIEW_NAME}")
 
         onCreate(db);
     }
