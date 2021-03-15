@@ -15,6 +15,7 @@ import kotlin.random.Random
 class PlayFragment : NavigableFragment() {
     private var lastGeneratedNumbersList = mutableListOf<Int>()
     private lateinit var termTextView: TextView
+    private lateinit var categoryTextView: TextView
     private lateinit var nextTermButton: Button
     private lateinit var thisView : View
 
@@ -33,6 +34,7 @@ class PlayFragment : NavigableFragment() {
     private fun initProperties() {
         // controls
         this.termTextView = thisView.findViewById<TextView>(R.id.termTextView)
+        this.categoryTextView = thisView.findViewById<TextView>(R.id.categoryTextView)
         this.nextTermButton = thisView.findViewById<Button>(R.id.nextTermButton)
     }
 
@@ -43,16 +45,17 @@ class PlayFragment : NavigableFragment() {
     }
 
     private fun getNextTerm()  {
-        val data = this.databaseHelper?.readData() ?: return
+        val query = this.databaseHelper?.queryTermsCategoriesView() ?: return
 
         vibrate()
 
-        var generatedNumber = generateNextRandomUnusedNumber(data.count)
+        var generatedNumber = generateNextRandomUnusedNumber(query.count)
 
         Log.i("PlayActivity", generatedNumber.toString())
-        data.moveToPosition(generatedNumber)
+        query.moveToPosition(generatedNumber)
         //this.termTextView.text = data.getString(1)
-        this.termTextView.setTextAnimation(data.getString(1), 150, 300)
+        this.termTextView.setTextAnimation(query.getString(1), 150, 300)
+        this.categoryTextView.setTextAnimation(query.getString(3), 150, 300)
     }
 
     private fun generateNextRandomUnusedNumber(rowsCount: Int) : Int {

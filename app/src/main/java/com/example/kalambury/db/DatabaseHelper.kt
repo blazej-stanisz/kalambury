@@ -45,31 +45,31 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
         db!!.execSQL(createTermsTable)
         db!!.execSQL(createTermsCategoriesView)
 
-        Log.i("DatabaseHelper", "Tables created.")
+        Log.i("DatabaseHelper", "Tables and views created.")
 
         insertDataToDatabase(db);
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        // categories
+        //  drop categories table
         db!!.execSQL("DROP TABLE IF EXISTS ${CategoriesTableModel.CATEGORIES_TABLE_NAME}")
 
-        // terms
-        db!!.execSQL("DROP TABLE IF EXISTS ${TermsTableModel.TERMS_TABLE_NAME}")
+        // drop terms table
+        db.execSQL("DROP TABLE IF EXISTS ${TermsTableModel.TERMS_TABLE_NAME}")
 
-        //TermsCategoriesView
-        db!!.execSQL("DROP VIEW IF EXISTS ${TermsCategoriesViewModel.TERMS_CATEGORIES_VIEW_NAME}")
+        // drop TermsCategoriesView view
+        db.execSQL("DROP VIEW IF EXISTS ${TermsCategoriesViewModel.TERMS_CATEGORIES_VIEW_NAME}")
 
         onCreate(db);
     }
 
-    fun readData() : Cursor {
+    fun queryTermsCategoriesView() : Cursor {
         Log.i("DatabaseHelper", "readData")
 
         val db : SQLiteDatabase = this.writableDatabase
-        val read : Cursor = db.rawQuery("SELECT * FROM ${TermsTableModel.TERMS_TABLE_NAME}", null)
+        val query : Cursor = db.rawQuery("SELECT * FROM ${TermsCategoriesViewModel.TERMS_CATEGORIES_VIEW_NAME}", null)
 
-        return read
+        return query
     }
 
     fun insertDataToDatabase(db: SQLiteDatabase) {
